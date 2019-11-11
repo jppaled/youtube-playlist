@@ -58,6 +58,8 @@ class Playlist extends React.Component {
     render() {
         return (
             <div>
+                <h1>Youtube-playlist</h1>
+                <p>Create youtube playlist without google account</p>
                 <h2>Add video</h2>
                 <form onSubmit={this.handleSubmit}>
                     <label htmlFor="link"> Youtube video link:
