@@ -11,6 +11,7 @@ function List(props) {
                     </li>
                 )}
             </ul>
+            <button onClick={props.handleClear}>Clear</button>
         </div>
     );
 }

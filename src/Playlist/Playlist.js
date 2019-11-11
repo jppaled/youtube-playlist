@@ -1,4 +1,6 @@
 import React from 'react';
+import Header from './Components/Header';
+import Form from './Components/Form';
 import List from './Components/List';
 import Url from './Components/Url';
 import Notification from './Components/Notification';
@@ -56,30 +58,19 @@ class Playlist extends React.Component {
     }
 
     render() {
+        const {list, notification, value} = this.state;
+
         return (
             <div>
-                <h1>Youtube-playlist</h1>
-                <p>Create youtube playlist without google account</p>
-                <h2>Add video</h2>
-                <form onSubmit={this.handleSubmit}>
-                    <label htmlFor="link"> Youtube video link:
-                        <input
-                            type="text"
-                            id="link"
-                            placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-                            value={this.state.value}
-                            onChange={this.handleChange}
-                        />
-                    </label>
-                    <input type="submit" value="Add" />
-                </form>
-
-                <List list={this.state.list} />
-
-                <button onClick={this.handleClear}>Clear</button>
-
-                <Url list={this.state.list} />
-                <Notification notification={this.state.notification} />
+                <Header />
+                <Form 
+                    value={value} 
+                    handleChange={this.handleChange} 
+                    handleSubmit={this.handleSubmit} 
+                />
+                <Notification notification={notification} />
+                <List list={list} handleClear={this.handleClear} />
+                <Url list={list} />
             </div>
         );
     }
