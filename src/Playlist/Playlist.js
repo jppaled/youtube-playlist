@@ -1,9 +1,5 @@
 import React from 'react';
-import Header from './Components/Header';
-import Form from './Components/Form';
-import List from './Components/List';
-import Url from './Components/Url';
-import Notification from './Components/Notification';
+import { Form, Header, List, Notification, Url } from './Components';
 
 class Playlist extends React.Component {
     constructor(props) {
