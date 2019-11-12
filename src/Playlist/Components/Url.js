@@ -19,7 +19,7 @@ class Url extends React.Component {
     }
 
     render() {
-        let url = `http://www.youtube.com/watch_videos?video_ids=${this.props.list.map((link) => `${link},`)}`;
+        let url = `http://www.youtube.com/watch_videos?video_ids=${this.props.list.map((video) => `${video.id},`)}`;
 
         return (
             <div>

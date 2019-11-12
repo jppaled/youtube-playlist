@@ -1,0 +1,19 @@
+.videoList {
+    display: flex;
+    flex-direction: column;
+}
+
+.videoElement {
+    display: flex;
+    margin-top: 10px;
+}
+
+.videoInfos {
+    display: flex;
+    flex-direction: column;
+    margin-left: 5px;
+}
+
+.videoTitle {
+    font-weight: bold;
+}

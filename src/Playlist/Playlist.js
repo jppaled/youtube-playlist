@@ -1,5 +1,7 @@
 import React from 'react';
 import { Form, Header, List, Notification, Url } from './Components';
+import { getVideoInfo, getYoutubeId } from './Utils/youtube';
+import './Playlist.css'
 
 class Playlist extends React.Component {
     constructor(props) {
@@ -16,33 +18,44 @@ class Playlist extends React.Component {
         this.handleClear = this.handleClear.bind(this);
         this.handleResetNotification = this.handleResetNotification.bind(this);
         this.handleDeleteVideo = this.handleDeleteVideo.bind(this);
+        this.handleCheckIfVideoExist = this.handleCheckIfVideoExist.bind(this);
     }
 
     handleChange(event) {
         this.setState({ value: event.target.value });
     }
 
-    handleSubmit(event) {
+    handleSubmit = async (event) => {
         event.preventDefault();
 
-        const youtubeId = this.getYoutubeId(this.state.value);
+        const youtubeId = getYoutubeId(this.state.value);
         
+        let notification = {};
+
         if (youtubeId) {
-            const isAlreadyAdded = this.state.list.includes(youtubeId);
-            
+            const isAlreadyAdded = this.handleCheckIfVideoExist(youtubeId);
+          
             if (!isAlreadyAdded) {
-                this.setState({
-                    list: [...this.state.list, youtubeId],
-                    notification: this.handleCreateNotification("Video added !", "green")
-                })
+                let infos = await getVideoInfo(youtubeId);
+                
+                if (infos.length > 0) {
+                    this.setState({ list: [...this.state.list, infos[0]] })
+                    
+                    notification = this.handleCreateNotification("Video added !", "green");
+                } else {
+                    notification = this.handleCreateNotification("Video did not exist", "red");
+                }
             } else {
-                this.setState({ notification: this.handleCreateNotification("Video already added !", "red") })
+                notification = this.handleCreateNotification("Video already added !", "red");
             }
         } else {
-            this.setState({ notification: this.handleCreateNotification("Not a valid url !", "red") })
+            notification = this.handleCreateNotification("Not a valid url !", "red");
         }
 
-        this.setState({ value: '' })
+        this.setState({ 
+            value: '',
+            notification
+        })
     }
 
     handleClear() {
@@ -52,27 +65,39 @@ class Playlist extends React.Component {
         })
     }
 
+    handleCheckIfVideoExist(id) {
+        const { list } = this.state;
+
+        for (let i = 0; i < list.length; i++) {
+            if(list[i].id === id) {
+                return true
+            }
+        }
+    }
+
     handleCreateNotification(text, color) {
         return { color: color, text: text }
     }
 
     handleResetNotification() {
-       
         this.setState({ notification: [] });
     }
 
-    handleDeleteVideo(index) {
-        let newList = [...this.state.list];
+    handleDeleteVideo(id) {
+        const { list } = this.state;
+
+        for (let i = 0; i < list.length; i++) {
+            if(list[i].id === id) {
+                const index = i;
+                
+                let newList = [...this.state.list];
         
-        newList.splice(index, 1);
+                newList.splice(index, 1);
 
-        this.setState({ list: newList })
-    }
-
-    getYoutubeId(url) {
-        url = url.split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
-
-        return (url[2] !== undefined) ? url[2].split(/[^0-9a-z_-]/i)[0] : false;
+                this.setState({ list: newList })
+                break;
+            }
+        }
     }
 
     render() {
