@@ -1,8 +1,13 @@
 import React from 'react';
+import Notification from './Notification';
 
 class Url extends React.Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            notification: {}    
+        }
 
         this.copyCodeToClipboard = this.copyCodeToClipboard.bind(this);
     }
@@ -10,7 +15,7 @@ class Url extends React.Component {
     copyCodeToClipboard() {
         navigator.clipboard.writeText(this.paragraph.textContent);
         
-        alert('Link was past to your clipboard')
+        this.setState({ notification: {text: "Copied!", color: "green"} })
     }
 
     render() {
@@ -24,6 +29,7 @@ class Url extends React.Component {
                 </a>
                 <br />
                 <button onClick={this.copyCodeToClipboard}>Copy</button>
+                <Notification notification={this.state.notification} />
             </div>
         );
     }

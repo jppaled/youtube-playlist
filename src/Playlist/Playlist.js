@@ -8,6 +8,7 @@ import Notification from './Components/Notification';
 class Playlist extends React.Component {
     constructor(props) {
         super(props);
+
         this.state = {
             value: '',
             list: [],
@@ -17,6 +18,8 @@ class Playlist extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleClear = this.handleClear.bind(this);
+        this.handleResetNotification = this.handleResetNotification.bind(this);
+        this.handleDeleteVideo = this.handleDeleteVideo.bind(this);
     }
 
     handleChange(event) {
@@ -27,12 +30,18 @@ class Playlist extends React.Component {
         event.preventDefault();
 
         const youtubeId = this.getYoutubeId(this.state.value);
-
+        
         if (youtubeId) {
-            this.setState({
-                list: [...this.state.list, youtubeId],
-                notification: this.handleCreateNotification("Video added !", "green")
-            })
+            const isAlreadyAdded = this.state.list.includes(youtubeId);
+            
+            if (!isAlreadyAdded) {
+                this.setState({
+                    list: [...this.state.list, youtubeId],
+                    notification: this.handleCreateNotification("Video added !", "green")
+                })
+            } else {
+                this.setState({ notification: this.handleCreateNotification("Video already added !", "red") })
+            }
         } else {
             this.setState({ notification: this.handleCreateNotification("Not a valid url !", "red") })
         }
@@ -51,6 +60,19 @@ class Playlist extends React.Component {
         return { color: color, text: text }
     }
 
+    handleResetNotification() {
+       
+        this.setState({ notification: [] });
+    }
+
+    handleDeleteVideo(index) {
+        let newList = [...this.state.list];
+        
+        newList.splice(index, 1);
+
+        this.setState({ list: newList })
+    }
+
     getYoutubeId(url) {
         url = url.split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
 
@@ -66,10 +88,15 @@ class Playlist extends React.Component {
                 <Form 
                     value={value} 
                     handleChange={this.handleChange} 
-                    handleSubmit={this.handleSubmit} 
+                    handleSubmit={this.handleSubmit}
+                    handleResetNotification={this.handleResetNotification}
                 />
                 <Notification notification={notification} />
-                <List list={list} handleClear={this.handleClear} />
+                <List 
+                    list={list} 
+                    handleClear={this.handleClear}
+                    handleDeleteVideo={this.handleDeleteVideo}
+                />
                 <Url list={list} />
             </div>
         );

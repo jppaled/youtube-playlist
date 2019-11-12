@@ -12,6 +12,7 @@ function Form(props) {
                         placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
                         value={props.value}
                         onChange={props.handleChange}
+                        onFocus={props.handleResetNotification}
                     />
                 </label>
                 <input type="submit" value="Add" />
