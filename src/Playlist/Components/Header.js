@@ -1,10 +1,13 @@
 import React from 'react';
+import { Typography } from '@material-ui/core';
 
 function Header(props) {
     return (
         <div>
-            <h1>Youtube-playlist</h1>
-            <p>Create youtube playlist without google account</p>
+            <Typography variant="h2">Youtube-playlist</Typography>
+            <Typography>
+                Create youtube playlist without google account
+            </Typography>
         </div>
     );
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button, Grid, TextField } from '@material-ui/core';
 import Notification from './Notification';
 
 class Url extends React.Component {
@@ -6,31 +7,64 @@ class Url extends React.Component {
         super(props);
 
         this.state = {
-            notification: {}    
+            notification: {},
+            openNotification: false    
         }
 
         this.copyCodeToClipboard = this.copyCodeToClipboard.bind(this);
+        this.handleOpenNotification = this.handleOpenNotification.bind(this);
+        this.handleCloseNotification = this.handleCloseNotification.bind(this);
     }
 
-    copyCodeToClipboard() {
-        navigator.clipboard.writeText(this.paragraph.textContent);
+    copyCodeToClipboard(url) {
+        navigator.clipboard.writeText(url)
         
-        this.setState({ notification: {text: "Copied!", color: "green"} })
+        this.setState({ 
+            notification: this.props.handleCreateNotification("Copied!", "success"), 
+        }, this.handleOpenNotification)
+    }
+
+    handleOpenNotification() {
+        this.setState({ openNotification: true });
+    }
+
+    handleCloseNotification() {
+        this.setState({ openNotification: false });
     }
 
     render() {
-        let url = `http://www.youtube.com/watch_videos?video_ids=${this.props.list.map((video) => `${video.id},`)}`;
+        const {notification, openNotification} = this.state;
+
+        let url = `http://www.youtube.com/watch_videos?video_ids=${this.props.playlist.map((video) => `${video.id},`)}`;
 
         return (
-            <div>
-                <h2>Your URL</h2>
-                <a href={url} ref={(paragraph) => this.paragraph = paragraph}>
-                   {url}
-                </a>
-                <br />
-                <button onClick={this.copyCodeToClipboard}>Copy</button>
-                <Notification notification={this.state.notification} />
-            </div>
+            <Grid container direction="row" alignItems="center" spacing={2}>
+                <Grid item>
+                    <TextField 
+                        label="Your playlist URL"
+                        defaultValue={url}
+                        InputProps={{
+                            readOnly: true,
+                        }}
+                        variant="outlined"
+                        className="url"
+                    />
+                </Grid>
+                <Grid item>
+                    <Button 
+                        variant="contained"
+                        color="primary"
+                        onClick={() => this.copyCodeToClipboard(url)}>Copy
+                    </Button>
+                </Grid>
+                <Grid item>
+                    <Notification 
+                        notification={notification} 
+                        open={openNotification} 
+                        handleClose={this.handleCloseNotification}
+                    />
+                </Grid>
+            </Grid>
         );
     }
 }

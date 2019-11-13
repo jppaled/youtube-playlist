@@ -1,6 +1,7 @@
 import React from 'react';
-import { Form, Header, List, Notification, Url } from './Components';
-import { getVideoInfo, getYoutubeId } from './Utils/youtube';
+import { Grid } from '@material-ui/core';
+import { Clear, Form, Header, Import, List, Notification, Url } from './Components';
+import { getVideoInfo, getYoutubeId, getChannelInfo, getVideosFromPlaylist } from './Utils/youtube';
 import './Playlist.css'
 
 class Playlist extends React.Component {
@@ -8,27 +9,31 @@ class Playlist extends React.Component {
         super(props);
 
         this.state = {
-            value: '',
-            list: [],
-            notification: {}
+            urlInputValue: '',
+            playlist: [],
+            notification: {},
+            openNotification: false
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleClear = this.handleClear.bind(this);
-        this.handleResetNotification = this.handleResetNotification.bind(this);
         this.handleDeleteVideo = this.handleDeleteVideo.bind(this);
         this.handleCheckIfVideoExist = this.handleCheckIfVideoExist.bind(this);
+        this.handleOpenNotification = this.handleOpenNotification.bind(this);
+        this.handleCloseNotification = this.handleCloseNotification.bind(this);
+        this.handleImportPlaylist = this.handleImportPlaylist.bind(this);
+        this.handleMergeInfos = this.handleMergeInfos.bind(this);
     }
 
     handleChange(event) {
-        this.setState({ value: event.target.value });
+        this.setState({ urlInputValue: event.target.value });
     }
 
     handleSubmit = async (event) => {
         event.preventDefault();
 
-        const youtubeId = getYoutubeId(this.state.value);
+        const youtubeId = getYoutubeId(this.state.urlInputValue);
         
         let notification = {};
 
@@ -36,90 +41,164 @@ class Playlist extends React.Component {
             const isAlreadyAdded = this.handleCheckIfVideoExist(youtubeId);
           
             if (!isAlreadyAdded) {
-                let infos = await getVideoInfo(youtubeId);
-                
-                if (infos.length > 0) {
-                    this.setState({ list: [...this.state.list, infos[0]] })
+                let videoInfos = await getVideoInfo(youtubeId);
+
+                if (videoInfos.length > 0) {
+                    let channelInfos = await getChannelInfo(videoInfos[0].snippet.channelId);
                     
-                    notification = this.handleCreateNotification("Video added !", "green");
+                    let finalVideo = this.handleMergeInfos(videoInfos, channelInfos);
+                 
+                    this.setState({ playlist: [...this.state.playlist, finalVideo] })
+                    
+                    notification = this.handleCreateNotification("Video added !", "success");
                 } else {
-                    notification = this.handleCreateNotification("Video did not exist", "red");
+                    notification = this.handleCreateNotification("Video does not exist", "error");
                 }
             } else {
-                notification = this.handleCreateNotification("Video already added !", "red");
+                notification = this.handleCreateNotification("Video already added !", "error");
             }
         } else {
-            notification = this.handleCreateNotification("Not a valid url !", "red");
+            notification = this.handleCreateNotification("Not a valid url !", "error");
         }
 
         this.setState({ 
-            value: '',
-            notification
-        })
+            urlInputValue: '',
+            notification,
+        }, this.handleOpenNotification)
     }
 
     handleClear() {
         this.setState({
-            list: [],
-            notification: this.handleCreateNotification("Video list cleared !", "green")
-        })
+            playlist: [],
+            notification: this.handleCreateNotification("Playlist cleared !", "success")
+        }, this.handleOpenNotification)
     }
 
     handleCheckIfVideoExist(id) {
-        const { list } = this.state;
+        const { playlist } = this.state;
 
-        for (let i = 0; i < list.length; i++) {
-            if(list[i].id === id) {
+        for (let i = 0; i < playlist.length; i++) {
+            if (playlist[i].id === id) {
                 return true
             }
         }
     }
 
-    handleCreateNotification(text, color) {
-        return { color: color, text: text }
+    handleCreateNotification(message, color) {
+        return { color: color, message: message }
     }
 
-    handleResetNotification() {
-        this.setState({ notification: [] });
+    handleOpenNotification() {
+        this.setState({ openNotification: true});
     }
 
+    handleCloseNotification() {
+        this.setState({ openNotification: false});
+    }
+    
     handleDeleteVideo(id) {
-        const { list } = this.state;
+        const { playlist } = this.state;
 
-        for (let i = 0; i < list.length; i++) {
-            if(list[i].id === id) {
+        for (let i = 0; i < playlist.length; i++) {
+            if (playlist[i].id === id) {
                 const index = i;
                 
-                let newList = [...this.state.list];
+                let newPlayList = [...this.state.playlist];
         
-                newList.splice(index, 1);
+                newPlayList.splice(index, 1);
 
-                this.setState({ list: newList })
+                this.setState({ 
+                    playlist: newPlayList,
+                    notification: this.handleCreateNotification("Video deleted !", "success")
+                }, this.handleOpenNotification)
                 break;
             }
         }
     }
 
+    handleImportPlaylist = async (id) => {
+        let videos = await getVideosFromPlaylist(id);
+        let newVideos = []
+
+        for (let video of videos) {
+            let videoInfos = await getVideoInfo(video.snippet.resourceId.videoId);
+            let channelInfos =  await getChannelInfo(videoInfos[0].snippet.channelId);
+
+            let finalVideo = this.handleMergeInfos(videoInfos, channelInfos);
+
+            newVideos.push(finalVideo);
+        }
+
+        if (newVideos.length > 0) {
+            this.setState({
+                playlist: newVideos,
+                notification: this.handleCreateNotification("Playlist was imported !", "success")
+            }, this.handleOpenNotification)
+        }
+    }
+
+    handleMergeInfos(videoInfos, channelInfos) {
+        videoInfos[0]["snippet"]["channelInfos"] = channelInfos[0]
+
+        return videoInfos[0];
+    };
+
     render() {
-        const {list, notification, value} = this.state;
+        const {playlist, notification, openNotification, urlInputValue} = this.state;
 
         return (
-            <div>
-                <Header />
-                <Form 
-                    value={value} 
-                    handleChange={this.handleChange} 
-                    handleSubmit={this.handleSubmit}
-                    handleResetNotification={this.handleResetNotification}
-                />
-                <Notification notification={notification} />
-                <List 
-                    list={list} 
-                    handleClear={this.handleClear}
-                    handleDeleteVideo={this.handleDeleteVideo}
-                />
-                <Url list={list} />
-            </div>
+            <Grid container className="playlistContainer">
+                <Grid item>
+                    <Grid
+                        container
+                        direction="column"
+                        justify="flex-start"
+                        alignItems="flex-start"
+                        spacing={2}
+                    >
+                        <Grid item>
+                            <Header />
+                        </Grid>
+                        <Grid item>
+                            <Form 
+                                urlInputValue={urlInputValue} 
+                                handleChange={this.handleChange} 
+                                handleSubmit={this.handleSubmit}
+                            />
+                        </Grid>
+                        <Grid item>
+                            {playlist.length > 0 ? (
+                                <Clear clear={this.handleClear} />
+                            ) : (
+                                <Import import={this.handleImportPlaylist} />
+                            )}
+                            </Grid>
+                        <Grid item>
+                            <List 
+                                playlist={playlist} 
+                                handleClear={this.handleClear}
+                                handleDeleteVideo={this.handleDeleteVideo}
+                            />
+                        </Grid>
+                        <Grid item>
+                            {playlist.length > 0 && (
+                                <Url 
+                                    playlist={playlist} 
+                                    handleCreateNotification={this.handleCreateNotification}
+                                    handleCloseNotification={this.handleCloseNotification}
+                                />
+                            )} 
+                        </Grid>
+                        <Grid item>
+                            <Notification 
+                                notification={notification} 
+                                open={openNotification}
+                                handleClose={this.handleCloseNotification}
+                            />
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
         );
     }
 }

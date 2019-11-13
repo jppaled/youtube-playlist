@@ -1,19 +1,15 @@
-.videoList {
-    display: flex;
-    flex-direction: column;
+.playlistContainer {
+    padding: 15px;
 }
-
-.videoElement {
-    display: flex;
-    margin-top: 10px;
+.videoCard {
+    width: 320px;
+    height: 340px;
 }
-
-.videoInfos {
-    display: flex;
-    flex-direction: column;
-    margin-left: 5px;
+.videoThumbnail {
+    max-width: 320px;
+    max-height: 180px;
 }
-
-.videoTitle {
-    font-weight: bold;
+.avatar {
+    max-width: 30px;
+    max-height: 30px;
 }
