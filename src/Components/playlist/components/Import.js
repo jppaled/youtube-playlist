@@ -9,7 +9,7 @@ import {
     DialogTitle, 
     TextField
 } from '@material-ui/core';
-import { getPlaylistId } from '../../Utils/youtube';
+import { getPlaylistId } from '../../../utils';
 
 export default function Import(props) {
     const [open, setOpen] = React.useState(false);

@@ -1,8 +1,9 @@
 import React from 'react';
 import { Grid } from '@material-ui/core';
 import { SearchBar } from './Components';
-import { Header, List } from '../Components'
-import { formatVideosInfos, getVideosBySearch } from '../Utils/youtube';
+import { Header, List } from '../'
+import { getVideosBySearch } from '../../api/youtube';
+import { formatVideosInfos } from '../../utils'
 
 export default function Search(props) {
     const [searchResult, setsearchResult] = React.useState([])

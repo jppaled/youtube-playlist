@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Grid, TextField } from '@material-ui/core';
-import Notification from './Notification';
+import Notification from '../../Notification';
+import { createNotification } from '../../../utils';
 
 export default function Url (props) {
     const [notification, setNotification] = React.useState({})
@@ -9,7 +10,7 @@ export default function Url (props) {
     function copyCodeToClipboard(url) {
         navigator.clipboard.writeText(url)
         
-        setNotification(props.handleCreateNotification("Copied!", "success"))
+        setNotification(createNotification("Copied!", "success"))
         
         handleOpenNotification()
     }
@@ -22,14 +23,24 @@ export default function Url (props) {
         setOpenNotification(false);
     }
 
-    let url = `http://www.youtube.com/watch_videos?video_ids=${props.playlist.map((video) => `${video.id},`)}`;
+    function createPlaylistUrl(playlist) {
+        let baseUrl = "http://www.youtube.com/watch_videos?video_ids="
+        
+        playlist.forEach(video => {
+            baseUrl += `${video.id},`
+        });
+
+        return baseUrl;
+    }
+   
+    const playlistUrl = createPlaylistUrl(props.playlist);
 
     return (
         <Grid container direction="row" alignItems="center" spacing={2}>
             <Grid item>
                 <TextField 
                     label="Your playlist URL"
-                    defaultValue={url}
+                    defaultValue={playlistUrl}
                     InputProps={{
                         readOnly: true,
                     }}
@@ -41,7 +52,7 @@ export default function Url (props) {
                 <Button 
                     variant="contained"
                     color="primary"
-                    onClick={() => copyCodeToClipboard(url)}
+                    onClick={() => copyCodeToClipboard(playlistUrl)}
                 >
                     Copy
                 </Button>
