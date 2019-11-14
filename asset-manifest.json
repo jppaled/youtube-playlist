@@ -1,21 +1,33 @@
 {
   "files": {
-    "main.css": "/youtube-playlist/static/css/main.34de6062.chunk.css",
-    "main.js": "/youtube-playlist/static/js/main.795cd94a.chunk.js",
-    "main.js.map": "/youtube-playlist/static/js/main.795cd94a.chunk.js.map",
-    "runtime-main.js": "/youtube-playlist/static/js/runtime-main.8fe5175d.js",
-    "runtime-main.js.map": "/youtube-playlist/static/js/runtime-main.8fe5175d.js.map",
-    "static/js/2.4491da48.chunk.js": "/youtube-playlist/static/js/2.4491da48.chunk.js",
-    "static/js/2.4491da48.chunk.js.map": "/youtube-playlist/static/js/2.4491da48.chunk.js.map",
+    "static/js/0.e0db3ab4.chunk.js": "/youtube-playlist/static/js/0.e0db3ab4.chunk.js",
+    "static/js/0.e0db3ab4.chunk.js.map": "/youtube-playlist/static/js/0.e0db3ab4.chunk.js.map",
+    "main.css": "/youtube-playlist/static/css/main.6e6f69d5.chunk.css",
+    "main.js": "/youtube-playlist/static/js/main.2660ec57.chunk.js",
+    "main.js.map": "/youtube-playlist/static/js/main.2660ec57.chunk.js.map",
+    "runtime-main.js": "/youtube-playlist/static/js/runtime-main.41e811ff.js",
+    "runtime-main.js.map": "/youtube-playlist/static/js/runtime-main.41e811ff.js.map",
+    "static/js/3.b6a4bc22.chunk.js": "/youtube-playlist/static/js/3.b6a4bc22.chunk.js",
+    "static/js/3.b6a4bc22.chunk.js.map": "/youtube-playlist/static/js/3.b6a4bc22.chunk.js.map",
+    "static/js/4.6037f3cb.chunk.js": "/youtube-playlist/static/js/4.6037f3cb.chunk.js",
+    "static/js/4.6037f3cb.chunk.js.map": "/youtube-playlist/static/js/4.6037f3cb.chunk.js.map",
+    "static/js/5.716d9285.chunk.js": "/youtube-playlist/static/js/5.716d9285.chunk.js",
+    "static/js/5.716d9285.chunk.js.map": "/youtube-playlist/static/js/5.716d9285.chunk.js.map",
+    "static/js/6.3c6e43a1.chunk.js": "/youtube-playlist/static/js/6.3c6e43a1.chunk.js",
+    "static/js/6.3c6e43a1.chunk.js.map": "/youtube-playlist/static/js/6.3c6e43a1.chunk.js.map",
+    "static/js/7.bf036079.chunk.js": "/youtube-playlist/static/js/7.bf036079.chunk.js",
+    "static/js/7.bf036079.chunk.js.map": "/youtube-playlist/static/js/7.bf036079.chunk.js.map",
+    "static/js/8.5846e5ce.chunk.js": "/youtube-playlist/static/js/8.5846e5ce.chunk.js",
+    "static/js/8.5846e5ce.chunk.js.map": "/youtube-playlist/static/js/8.5846e5ce.chunk.js.map",
     "index.html": "/youtube-playlist/index.html",
-    "precache-manifest.a40bfa3d707f580e3529d235d4902a78.js": "/youtube-playlist/precache-manifest.a40bfa3d707f580e3529d235d4902a78.js",
+    "precache-manifest.a2af6d343a324e6ee06b3b7048152b97.js": "/youtube-playlist/precache-manifest.a2af6d343a324e6ee06b3b7048152b97.js",
     "service-worker.js": "/youtube-playlist/service-worker.js",
-    "static/css/main.34de6062.chunk.css.map": "/youtube-playlist/static/css/main.34de6062.chunk.css.map"
+    "static/css/main.6e6f69d5.chunk.css.map": "/youtube-playlist/static/css/main.6e6f69d5.chunk.css.map"
   },
   "entrypoints": [
-    "static/js/runtime-main.8fe5175d.js",
-    "static/js/2.4491da48.chunk.js",
-    "static/css/main.34de6062.chunk.css",
-    "static/js/main.795cd94a.chunk.js"
+    "static/js/runtime-main.41e811ff.js",
+    "static/js/3.b6a4bc22.chunk.js",
+    "static/css/main.6e6f69d5.chunk.css",
+    "static/js/main.2660ec57.chunk.js"
   ]
 }
