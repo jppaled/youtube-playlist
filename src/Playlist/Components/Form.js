@@ -1,5 +1,5 @@
 import React from 'react';
-import {Fab, Grid, TextField } from '@material-ui/core';
+import {CircularProgress, Fab, Grid, TextField } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
 
 function Form(props) {
@@ -16,14 +16,18 @@ function Form(props) {
                     />
                 </Grid>
                 <Grid item>
-                    <Fab
-                        type="submit"
-                        color="primary"
-                        aria-label="add"
-                        size="small"
-                    >
-                        <Add />
+                    {props.loading ? (
+                       <CircularProgress size={30} />
+                    ) : (
+                        <Fab
+                            type="submit"
+                            color="primary"
+                            aria-label="add"
+                            size="small"
+                        >
+                            <Add />
                     </Fab>
+                    )}
                 </Grid>
             </Grid>
         </form>

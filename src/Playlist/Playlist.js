@@ -1,7 +1,8 @@
 import React from 'react';
 import { Grid } from '@material-ui/core';
-import { Clear, Form, Header, Import, List, Notification, Url } from './Components';
-import { getVideoInfo, getYoutubeId, getChannelInfo, getVideosFromPlaylist } from './Utils/youtube';
+import { Clear, Form, Header, Import, Notification, Url } from './Components';
+import { List } from '../Components'
+import { formatPlaylist, formatVideosInfos, getVideoInfo, getYoutubeId } from '../Utils/youtube';
 import './Playlist.css'
 
 class Playlist extends React.Component {
@@ -12,7 +13,8 @@ class Playlist extends React.Component {
             urlInputValue: '',
             playlist: [],
             notification: {},
-            openNotification: false
+            openNotification: false,
+            loading: false
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -23,7 +25,6 @@ class Playlist extends React.Component {
         this.handleOpenNotification = this.handleOpenNotification.bind(this);
         this.handleCloseNotification = this.handleCloseNotification.bind(this);
         this.handleImportPlaylist = this.handleImportPlaylist.bind(this);
-        this.handleMergeInfos = this.handleMergeInfos.bind(this);
     }
 
     handleChange(event) {
@@ -31,6 +32,8 @@ class Playlist extends React.Component {
     }
 
     handleSubmit = async (event) => {
+        this.setState({ loading: true });
+
         event.preventDefault();
 
         const youtubeId = getYoutubeId(this.state.urlInputValue);
@@ -44,11 +47,9 @@ class Playlist extends React.Component {
                 let videoInfos = await getVideoInfo(youtubeId);
 
                 if (videoInfos.length > 0) {
-                    let channelInfos = await getChannelInfo(videoInfos[0].snippet.channelId);
+                    let videos = await formatVideosInfos(videoInfos);
                     
-                    let finalVideo = this.handleMergeInfos(videoInfos, channelInfos);
-                 
-                    this.setState({ playlist: [...this.state.playlist, finalVideo] })
+                    this.setState({ playlist: [...this.state.playlist, videos[0]] })
                     
                     notification = this.handleCreateNotification("Video added !", "success");
                 } else {
@@ -64,6 +65,7 @@ class Playlist extends React.Component {
         this.setState({ 
             urlInputValue: '',
             notification,
+            loading: false
         }, this.handleOpenNotification)
     }
 
@@ -116,35 +118,19 @@ class Playlist extends React.Component {
         }
     }
 
-    handleImportPlaylist = async (id) => {
-        let videos = await getVideosFromPlaylist(id);
-        let newVideos = []
+    handleImportPlaylist = async (id) => {        
+        let playlist = await formatPlaylist(id);
 
-        for (let video of videos) {
-            let videoInfos = await getVideoInfo(video.snippet.resourceId.videoId);
-            let channelInfos =  await getChannelInfo(videoInfos[0].snippet.channelId);
-
-            let finalVideo = this.handleMergeInfos(videoInfos, channelInfos);
-
-            newVideos.push(finalVideo);
-        }
-
-        if (newVideos.length > 0) {
+        if (playlist.length > 0) {
             this.setState({
-                playlist: newVideos,
+                playlist: playlist,
                 notification: this.handleCreateNotification("Playlist was imported !", "success")
             }, this.handleOpenNotification)
         }
     }
 
-    handleMergeInfos(videoInfos, channelInfos) {
-        videoInfos[0]["snippet"]["channelInfos"] = channelInfos[0]
-
-        return videoInfos[0];
-    };
-
     render() {
-        const {playlist, notification, openNotification, urlInputValue} = this.state;
+        const {playlist, notification, openNotification, urlInputValue, loading} = this.state;
 
         return (
             <Grid container className="playlistContainer">
@@ -164,6 +150,7 @@ class Playlist extends React.Component {
                                 urlInputValue={urlInputValue} 
                                 handleChange={this.handleChange} 
                                 handleSubmit={this.handleSubmit}
+                                loading={loading}
                             />
                         </Grid>
                         <Grid item>
@@ -174,11 +161,12 @@ class Playlist extends React.Component {
                             )}
                             </Grid>
                         <Grid item>
-                            <List 
-                                playlist={playlist} 
-                                handleClear={this.handleClear}
-                                handleDeleteVideo={this.handleDeleteVideo}
-                            />
+                            {playlist.length > 0 && (
+                                <List
+                                    playlist={playlist} 
+                                    handleDeleteVideo={this.handleDeleteVideo}
+                                />
+                            )}
                         </Grid>
                         <Grid item>
                             {playlist.length > 0 && (
