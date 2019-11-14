@@ -11,22 +11,22 @@ import {
 } from '@material-ui/core';
 import { getPlaylistId } from '../../Utils/youtube';
 
-function Import(props) {
+export default function Import(props) {
     const [open, setOpen] = React.useState(false);
     const [url, setUrl] = React.useState('');
     const [error, setError] = React.useState(false);
     const [loading, setLoading] = React.useState(false);
 
-    const handleClickOpen = () => {
+    function handleClickOpen() {
         setOpen(true);
     };
 
-    const handleClose = () => {
+    function handleClose() {
         setOpen(false);
         setLoading(false);
     };
 
-    const handleGetPlaylistId = (url) => {
+    function handleGetPlaylistId(url) {
         setLoading(true);
 
         let id = getPlaylistId(url);
@@ -93,5 +93,3 @@ function Import(props) {
         </div>       
     );
 }
-
-export default Import;
