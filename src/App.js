@@ -2,9 +2,10 @@ import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { LinearProgress } from '@material-ui/core';
 
+const NotFound = lazy(() => import('./NotFound/NotFound'));
+const Player = lazy(() => import('./Player/Player'));
 const Playlist = lazy(() => import('./Playlist/Playlist'));
 const Search = lazy(() => import('./Search/Search'));
-const NotFound = lazy(() => import('./NotFound/NotFound'));
 
 export default function App() {
     return (
@@ -12,6 +13,7 @@ export default function App() {
             <Suspense fallback={<LinearProgress/>}>
                 <Switch>
                     <Route exact path="/" component={Playlist} />
+                    <Route exact path="/player/:id" component={Player} />
                     <Route exact path="/search" component={Search} />
                     <Route component={NotFound} />
                 </Switch>
