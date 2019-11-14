@@ -2,8 +2,10 @@ import React from 'react';
 import { Grid } from '@material-ui/core';
 import Video from './Video'
 
-function List(props) {
-    const getVideoId = (video) => {
+export default function List(props) {
+    const { justify, handleDeleteVideo, playlist } = props;
+
+    function getVideoId(video) {
         if(video && video.id) {
             if (typeof(video.id) === "string") {
                 return video.id
@@ -21,17 +23,17 @@ function List(props) {
                 <Grid
                     container
                     direction="row"
-                    justify={props.justify ? props.justify : "flex-start"}
+                    justify={justify ? justify : "flex-start"}
                     alignItems="flex-start"
                     spacing={2}
                 >
-                    {props.playlist.map((video, index) => 
+                    {playlist.map((video, index) => 
                         <Grid item key={index}>
                             <Video
-                                id={getVideoId(video)}
+                                videoId={getVideoId(video)}
                                 videoInfos={video.snippet}
                                 channelInfos={video.snippet.channelInfos}
-                                deleteVideo={props.handleDeleteVideo && props.handleDeleteVideo}
+                                deleteVideo={handleDeleteVideo && handleDeleteVideo}
                             />
                         </Grid>
                     )}
@@ -40,5 +42,3 @@ function List(props) {
         </Grid>
     );
 }
-
-export default List;
