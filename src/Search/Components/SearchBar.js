@@ -24,12 +24,12 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-function SearchBar(props) {
+export default function SearchBar(props) {
     const classes = useStyles();
     const [searchValue, setSearchValue] = React.useState('');
     const [loading, setLoading] = React.useState(false);
 
-    const handleSubmit = (event) => {
+    function handleSubmit(event) {
         setLoading(true);
         event.preventDefault();
         props.handleSubmit(searchValue, () => {
@@ -60,5 +60,3 @@ function SearchBar(props) {
         </Paper>
     );
 }
-
-export default SearchBar;

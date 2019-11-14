@@ -1,14 +1,14 @@
 import React from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 
-function Clear(props) {
+export default function Clear(props) {
     const [open, setOpen] = React.useState(false);
 
-    const handleClickOpen = () => {
+    function handleClickOpen() {
         setOpen(true);
     };
 
-    const handleClose = () => {
+    function handleClose() {
         setOpen(false);
     };
 
@@ -44,5 +44,3 @@ function Clear(props) {
         </div>       
     );
 }
-
-export default Clear;

@@ -2,71 +2,57 @@ import React from 'react';
 import { Button, Grid, TextField } from '@material-ui/core';
 import Notification from './Notification';
 
-class Url extends React.Component {
-    constructor(props) {
-        super(props);
+export default function Url (props) {
+    const [notification, setNotification] = React.useState({})
+    const [openNotification, setOpenNotification] = React.useState(false)
 
-        this.state = {
-            notification: {},
-            openNotification: false    
-        }
-
-        this.copyCodeToClipboard = this.copyCodeToClipboard.bind(this);
-        this.handleOpenNotification = this.handleOpenNotification.bind(this);
-        this.handleCloseNotification = this.handleCloseNotification.bind(this);
-    }
-
-    copyCodeToClipboard(url) {
+    function copyCodeToClipboard(url) {
         navigator.clipboard.writeText(url)
         
-        this.setState({ 
-            notification: this.props.handleCreateNotification("Copied!", "success"), 
-        }, this.handleOpenNotification)
+        setNotification(props.handleCreateNotification("Copied!", "success"))
+        
+        handleOpenNotification()
     }
 
-    handleOpenNotification() {
-        this.setState({ openNotification: true });
+    function handleOpenNotification() {
+        setOpenNotification(true);
     }
 
-    handleCloseNotification() {
-        this.setState({ openNotification: false });
+    function handleCloseNotification() {
+        setOpenNotification(false);
     }
 
-    render() {
-        const {notification, openNotification} = this.state;
+    let url = `http://www.youtube.com/watch_videos?video_ids=${props.playlist.map((video) => `${video.id},`)}`;
 
-        let url = `http://www.youtube.com/watch_videos?video_ids=${this.props.playlist.map((video) => `${video.id},`)}`;
-
-        return (
-            <Grid container direction="row" alignItems="center" spacing={2}>
-                <Grid item>
-                    <TextField 
-                        label="Your playlist URL"
-                        defaultValue={url}
-                        InputProps={{
-                            readOnly: true,
-                        }}
-                        variant="outlined"
-                        className="url"
-                    />
-                </Grid>
-                <Grid item>
-                    <Button 
-                        variant="contained"
-                        color="primary"
-                        onClick={() => this.copyCodeToClipboard(url)}>Copy
-                    </Button>
-                </Grid>
-                <Grid item>
-                    <Notification 
-                        notification={notification} 
-                        open={openNotification} 
-                        handleClose={this.handleCloseNotification}
-                    />
-                </Grid>
+    return (
+        <Grid container direction="row" alignItems="center" spacing={2}>
+            <Grid item>
+                <TextField 
+                    label="Your playlist URL"
+                    defaultValue={url}
+                    InputProps={{
+                        readOnly: true,
+                    }}
+                    variant="outlined"
+                    className="url"
+                />
             </Grid>
-        );
-    }
+            <Grid item>
+                <Button 
+                    variant="contained"
+                    color="primary"
+                    onClick={() => copyCodeToClipboard(url)}
+                >
+                    Copy
+                </Button>
+            </Grid>
+            <Grid item>
+                <Notification 
+                    notification={notification} 
+                    open={openNotification} 
+                    handleClose={handleCloseNotification}
+                />
+            </Grid>
+        </Grid>
+    );
 }
-
-export default Url;

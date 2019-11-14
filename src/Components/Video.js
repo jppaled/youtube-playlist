@@ -20,9 +20,10 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-function Video(props) {
+export default function Video(props) {
     const classes = useStyles();
-    
+    const { channelInfos, deleteVideo, videoInfos, videoId } = props;
+
     return (
         <Card className={classes.videoCard}>
             <CardHeader
@@ -30,14 +31,14 @@ function Video(props) {
                     <Avatar 
                         className={classes.avatar} 
                         aria-label="channel"
-                        src={props.channelInfos && props.channelInfos.snippet.thumbnails.default.url}
+                        src={channelInfos && channelInfos.snippet.thumbnails.default.url}
                     > 
-                        {props.videoInfos.channelTitle[0]} 
+                        {videoInfos.channelTitle[0]} 
                     </Avatar>
                 }
-                action={props.deleteVideo && (
-                        <Fab
-                        onClick={() => props.deleteVideo(props.id)}
+                action={deleteVideo && (
+                    <Fab
+                        onClick={() => deleteVideo(videoId)}
                         color="secondary"
                         aria-label="delete"
                         size="small"
@@ -45,21 +46,19 @@ function Video(props) {
                         <Delete />
                     </Fab>
                 )}
-                title={props.videoInfos.channelTitle}
+                title={videoInfos.channelTitle}
             >
             </CardHeader>
-            <CardActionArea onClick={() => window.location = `https://www.youtube.com/watch?v=${props.id}`}>
+            <CardActionArea onClick={() => window.location = `https://www.youtube.com/watch?v=${videoId}`}>
                 <CardMedia
                     component="img"
-                    image={props.videoInfos.thumbnails.medium.url}
+                    image={videoInfos.thumbnails.medium.url}
                     className={classes.videoThumbnail}
                 />
             </CardActionArea>
             <CardContent>
-                {props.videoInfos.title}
+                {videoInfos.title}
             </CardContent>
         </Card>
     );
 }
-
-export default Video;

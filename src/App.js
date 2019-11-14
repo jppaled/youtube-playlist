@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 const Playlist = lazy(() => import('./Playlist/Playlist'));
 const Search = lazy(() => import('./Search/Search'));
 
-function App() {
+export default function App() {
     return (
         <Router>
             <Suspense fallback={<div>Loading...</div>}>
@@ -16,5 +16,3 @@ function App() {
         </Router>
     );
 }
-
-export default App;

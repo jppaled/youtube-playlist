@@ -1,7 +1,7 @@
 import React from 'react';
 import { Typography } from '@material-ui/core';
 
-function Header(props) {
+export default function Header(props) {
     return (
         <div>
             <Typography variant="h2">Youtube-search</Typography>
@@ -11,5 +11,3 @@ function Header(props) {
         </div>
     );
 }
-
-export default Header;
