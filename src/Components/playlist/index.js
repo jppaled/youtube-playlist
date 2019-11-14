@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Grid, makeStyles } from '@material-ui/core';
-import { Clear, Form, Import, Notification, Url } from './Components';
-import { Header, List } from '../Components'
-import { formatPlaylist, formatVideosInfos, getVideoInfo, getYoutubeId } from '../Utils/youtube';
+import { Clear, Form, Import, Url } from './components';
+import { Header, List, Notification } from '../'
+import { getVideoInfo } from '../../api/youtube';
+import { createNotification, formatPlaylist, formatVideosInfos, getYoutubeId} from "../../utils";
 
 const useStyles = makeStyles(theme => ({
     playlistContainer: {
@@ -40,15 +41,15 @@ export default function Playlist (props) {
             
                     setPlaylist((playlist) => [...playlist, videos[0]]);
                     
-                    setNotification(handleCreateNotification("Video added !", "success"));
+                    setNotification(createNotification("Video added !", "success"));
                 } else {
-                    setNotification(handleCreateNotification("Video does not exist", "error"));
+                    setNotification(createNotification("Video does not exist", "error"));
                 }
             } else {
-                setNotification(handleCreateNotification("Video already added !", "error"));
+                setNotification(createNotification("Video already added !", "error"));
             }
         } else {
-            setNotification(handleCreateNotification("Not a valid url !", "error"));
+            setNotification(createNotification("Not a valid url !", "error"));
         }
 
         setUrlInputValue('');
@@ -58,7 +59,7 @@ export default function Playlist (props) {
 
     function handleClear() {
         setPlaylist([]);
-        setNotification(handleCreateNotification("Playlist cleared !", "success"));
+        setNotification(createNotification("Playlist cleared !", "success"));
         handleOpenNotification();
     }
 
@@ -68,10 +69,6 @@ export default function Playlist (props) {
                 return true
             }
         }
-    }
-
-    function handleCreateNotification(message, color) {
-        return { color: color, message: message }
     }
 
     function handleOpenNotification() {
@@ -92,7 +89,7 @@ export default function Playlist (props) {
                 newPlayList.splice(index, 1);
                 
                 setPlaylist(newPlayList);
-                setNotification(handleCreateNotification("Video deleted !", "success"));
+                setNotification(createNotification("Video deleted !", "success"));
                 handleOpenNotification();
                 break;
             }
@@ -104,10 +101,10 @@ export default function Playlist (props) {
 
         if (playlistFormated.length >= 0) {
             setPlaylist(playlistFormated);
-            setNotification(handleCreateNotification("Playlist was imported !", "success"));
+            setNotification(createNotification("Playlist was imported !", "success"));
         } else {
             setPlaylist([]);
-            setNotification(handleCreateNotification("Error when importing!", "error"));
+            setNotification(createNotification("Error when importing!", "error"));
         }
         
         handleOpenNotification();
@@ -156,7 +153,6 @@ export default function Playlist (props) {
                         {playlist.length > 0 && (
                             <Url 
                                 playlist={playlist} 
-                                handleCreateNotification={handleCreateNotification}
                                 handleCloseNotification={handleCloseNotification}
                             />
                         )} 

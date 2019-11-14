@@ -28,7 +28,8 @@ export default function Player(props) {
                 <iframe 
                     className={classes.video}
                     src={`https://www.youtube.com/embed/${id}`}
-                    frameborder="0" 
+                    frameborder="0"
+                    title="youtube-video"
                     allow="accelerometer; 
                     autoplay; 
                     encrypted-media; 

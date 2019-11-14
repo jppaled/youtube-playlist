@@ -31,7 +31,7 @@ export default function Video(props) {
                     <Avatar 
                         className={classes.avatar} 
                         aria-label="channel"
-                        src={channelInfos && channelInfos.snippet.thumbnails.default.url}
+                        src={channelInfos && channelInfos.snippet.thumbnails && channelInfos.snippet.thumbnails.default.url}
                     > 
                         {videoInfos.channelTitle[0]} 
                     </Avatar>
