@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid } from '@material-ui/core';
 import Video from './Video'
-import { getVideoId } from '../utils/getVideoId';
+import { getVideoId } from '../utils';
 
 export default function List(props) {
     const { justify, handleDeleteVideo, playlist } = props;
