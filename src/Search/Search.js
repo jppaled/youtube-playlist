@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid } from '@material-ui/core';
-import { Header, SearchBar } from './Components';
-import { List } from '../Components'
+import { SearchBar } from './Components';
+import { Header, List } from '../Components'
 import { formatVideosInfos, getVideosBySearch } from '../Utils/youtube';
 
 export default function Search(props) {
@@ -21,7 +21,10 @@ export default function Search(props) {
             <Grid item>
                 <Grid container>
                     <Grid item>
-                        <Header />
+                        <Header 
+                            title={"Youtube-search"}
+                            subtitle={"Search a Youtube video"}
+                        />
                     </Grid>
                 </Grid>
                 <Grid container justify="center">
