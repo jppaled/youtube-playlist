@@ -9,12 +9,12 @@ const Search = lazy(() => import('./components/search'));
 
 export default function App() {
     return (
-        <Router>
+        <Router basename={process.env.REACT_APP_PUBLIC_URL}>
             <Suspense fallback={<LinearProgress/>}>
                 <Switch>
-                    <Route exact path="/" component={Playlist} />
-                    <Route exact path="/player/:id" component={Player} />
-                    <Route exact path="/search" component={Search} />
+                    <Route path="/" component={Playlist} />
+                    <Route path="/player/:id" component={Player} />
+                    <Route path="/search" component={Search} />
                     <Route component={NotFound} />
                 </Switch>
             </Suspense>
