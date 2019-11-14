@@ -11,7 +11,7 @@ const variantIcon = {
     info: Info,
 };
 
-const useStyles1 = makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({
     success: {
         backgroundColor: green[600],
     },
@@ -37,8 +37,31 @@ const useStyles1 = makeStyles(theme => ({
     },
 }));
 
+export default function Notification(props) {
+    const { color, message } = props.notification;
+    const { handleClose, open } = props;
+    
+    return (
+        <Snackbar
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+            }}
+            open={open}
+            autoHideDuration={2500}
+            onClose={handleClose}
+        >
+            <MySnackbarContentWrapper
+                onClose={handleClose}
+                variant={color}
+                message={message}
+            />
+        </Snackbar>
+    );
+}
+
 function MySnackbarContentWrapper(props) {
-    const classes = useStyles1();
+    const classes = useStyles();
     const { className, message, onClose, variant, ...other } = props;
     const Icon = variantIcon[variant];
 
@@ -62,24 +85,3 @@ function MySnackbarContentWrapper(props) {
     );
 }
 
-function Notification(props) {
-    return (
-        <Snackbar
-            anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right',
-            }}
-            open={props.open}
-            autoHideDuration={2500}
-            onClose={props.handleClose}
-        >
-            <MySnackbarContentWrapper
-                onClose={props.handleClose}
-                variant={props.notification.color}
-                message={props.notification.message}
-            />
-        </Snackbar>
-    );
-}
-
-export default Notification;
