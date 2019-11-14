@@ -102,15 +102,15 @@ export default function Playlist (props) {
     async function handleImportPlaylist(id) {        
         let playlistFormated = await formatPlaylist(id);
 
-        if(playlistFormated.length >= 0) {
+        if (playlistFormated.length >= 0) {
             setPlaylist(playlistFormated);
             setNotification(handleCreateNotification("Playlist was imported !", "success"));
-            handleOpenNotification();
         } else {
             setPlaylist([]);
             setNotification(handleCreateNotification("Error when importing!", "error"));
-            handleOpenNotification();
         }
+        
+        handleOpenNotification();
     }
 
     return (

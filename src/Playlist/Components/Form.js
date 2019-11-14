@@ -19,7 +19,7 @@ export default function Form(props) {
                 </Grid>
                 <Grid item>
                     {loading ? (
-                       <CircularProgress size={30} />
+                        <CircularProgress size={30} />
                     ) : (
                         <Fab
                             type="submit"
