@@ -49,7 +49,7 @@ export default function Video(props) {
                 title={videoInfos.channelTitle}
             >
             </CardHeader>
-            <CardActionArea onClick={() => window.location = `https://www.youtube.com/watch?v=${videoId}`}>
+            <CardActionArea onClick={() => window.location = `/player/${videoId}`}>
                 <CardMedia
                     component="img"
                     image={videoInfos.thumbnails.medium.url}
