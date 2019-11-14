@@ -1,5 +1,15 @@
 import React from 'react';
-import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField} from '@material-ui/core';
+import { 
+    Button, 
+    CircularProgress, 
+    Dialog, 
+    DialogActions, 
+    DialogContent, 
+    DialogContentText, 
+    DialogTitle, 
+    TextField
+} from '@material-ui/core';
+import { getPlaylistId } from '../../Utils/youtube';
 
 function Import(props) {
     const [open, setOpen] = React.useState(false);
@@ -16,16 +26,16 @@ function Import(props) {
         setLoading(false);
     };
 
-    const getPlaylistId = (url) => {
+    const handleGetPlaylistId = (url) => {
         setLoading(true);
-        let id = /[&|\?]list=([a-zA-Z0-9_-]+)/gi.exec(url)
-    
-        if (id && id.length > 0) {
-            return id[1]
+
+        let id = getPlaylistId(url);
+
+        if (id) {
+            return id;
         } else {
+            setLoading(false);
             setError(true);
-            
-            return false;
         }
     }
     
@@ -70,7 +80,7 @@ function Import(props) {
                         cancel
                     </Button>
                     <Button 
-                        onClick={() => props.import(getPlaylistId(url))} 
+                        onClick={() => props.import(handleGetPlaylistId(url))} 
                         color="primary" 
                         autoFocus
                         disabled={loading}
