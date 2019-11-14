@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Grid, makeStyles } from '@material-ui/core';
-import { Clear, Form, Header, Import, Notification, Url } from './Components';
-import { List } from '../Components'
+import { Clear, Form, Import, Notification, Url } from './Components';
+import { Header, List } from '../Components'
 import { formatPlaylist, formatVideosInfos, getVideoInfo, getYoutubeId } from '../Utils/youtube';
 
 const useStyles = makeStyles(theme => ({
@@ -124,7 +124,10 @@ export default function Playlist (props) {
                     spacing={2}
                 >
                     <Grid item>
-                        <Header />
+                        <Header 
+                            title={"Youtube-playlist"} 
+                            subtitle={"Create youtube playlist without google account"}
+                        />
                     </Grid>
                     <Grid item>
                         <Form 
