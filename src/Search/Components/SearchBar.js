@@ -31,7 +31,9 @@ export default function SearchBar(props) {
 
     function handleSubmit(event) {
         setLoading(true);
+        
         event.preventDefault();
+        
         props.handleSubmit(searchValue, () => {
             setLoading(false);
         });
@@ -51,7 +53,7 @@ export default function SearchBar(props) {
             />
             <Divider className={classes.divider} orientation="vertical" />
             {loading ? (
-                 <CircularProgress size={30} />
+                 <CircularProgress className={classes.iconButton} size={24}/>
             ) : (
                 <IconButton type="submit" className={classes.iconButton} aria-label="search">
                     <SearchIcon />
